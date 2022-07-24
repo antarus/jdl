@@ -47,6 +47,10 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <listener>true</listener>
+                    <visitor>true</visitor>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>

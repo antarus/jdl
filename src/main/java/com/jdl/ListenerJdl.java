@@ -16,6 +16,7 @@ public class ListenerJdl extends JdlBaseListener {
 
     @Override
     public void exitApplicationType(JdlParser.ApplicationTypeContext ctx) {
+
         System.out.println("applicationType : " + ctx.getChild(1));
         super.exitApplicationType(ctx);
     }
@@ -63,6 +64,30 @@ public class ListenerJdl extends JdlBaseListener {
         }
 
         super.exitTestFrameworks(ctx);
+    }
+
+    @Override
+    public void exitConfig(JdlParser.ConfigContext ctx) {
+        System.out.println("config: " + ctx.getText());
+        super.exitConfig(ctx);
+    }
+
+    @Override
+    public void exitEnableTranslation(JdlParser.EnableTranslationContext ctx) {
+        System.out.println("EnableTranslation: " + ctx.getText());
+        super.exitEnableTranslation(ctx);
+    }
+
+    @Override
+    public void exitNativeLanguage(JdlParser.NativeLanguageContext ctx) {
+        System.out.println("NativeLanguage: " + ctx.getText());
+        super.exitNativeLanguage(ctx);
+    }
+
+    @Override
+    public void exitLanguages(JdlParser.LanguagesContext ctx) {
+        System.out.println("Languages: " + ctx.getText());
+        super.exitLanguages(ctx);
     }
 
     @Override

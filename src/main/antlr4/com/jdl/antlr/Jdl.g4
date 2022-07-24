@@ -42,35 +42,52 @@ enumType
 
 baseName
    : 'baseName' label
+   | 'packageName' label COMMA
    ;
 
 applicationType
     : 'applicationType' applicationTypeValues
+    | 'applicationType' applicationTypeValues COMMA
     ;
+
 applicationTypeValues
     : 'microservice'
     | 'gateway'
+    | 'monolith'
     ;
 
 packageName
     : 'packageName' label
+    | 'packageName' label COMMA
     ;
 
 serviceDiscoveryType
     : 'serviceDiscoveryType' BOOL
+    | 'serviceDiscoveryType' BOOL COMMA
     ;
 
 cacheProvider
     : 'cacheProvider' BOOL
+    | 'cacheProvider' BOOL COMMA
     ;
 buildTool
     : 'buildTool' BUILDTOOL_TYPE
+    | 'buildTool' BUILDTOOL_TYPE COMMA
     ;
+
 authenticationType
         : 'authenticationType' AUTHENTICATION_TYPE
+        | 'authenticationType' AUTHENTICATION_TYPE COMMA
         ;
+
 clientFramework
     : 'clientFramework' CLIENT_TYPE
+    |'clientFramework' CLIENT_TYPE COMMA
+    ;
+
+searchEngine
+    : 'searchEngine' SEARCH_ENGINE
+    | 'searchEngine' SEARCH_ENGINE COMMA
     ;
 
 prodDatabaseType
@@ -80,14 +97,22 @@ prodDatabaseType
 
 useSass
     : 'useSass' BOOL
+    | 'useSass' BOOL COMMA
     ;
 
 testFrameworks
     : 'testFrameworks' testFrameworksBody
+    | 'testFrameworks' testFrameworksBody COMMA
+    ;
+
+languages
+    : 'languages' languagesBody
+    | 'languages' languagesBody COMMA
     ;
 
 reactive
     : 'reactive' BOOL
+    | 'reactive' BOOL COMMA
     ;
 
 block
@@ -96,11 +121,24 @@ block
 
 serverPort
     : 'serverPort' NATURAL_NUMBER
+    | 'serverPort' NATURAL_NUMBER COMMA
+    ;
+
+nativeLanguage
+    : 'nativeLanguage'  label (COMMA label)*
+    | 'nativeLanguage'  label (COMMA label)* COMMA
     ;
 
 skipUserManagement
     : 'skipUserManagement' BOOL
+    | 'skipUserManagement' BOOL COMMA
     ;
+
+enableTranslation
+    : 'enableTranslation' BOOL
+    | 'enableTranslation' BOOL COMMA
+    ;
+
 blocktype
    : IDENTIFIER
    ;
@@ -143,6 +181,11 @@ testFrameworksBody
     | LSQUARE label (COMMA label)* RSQUARE
     ;
 
+languagesBody
+    : LSQUARE  RSQUARE
+    | LSQUARE label (COMMA label)* RSQUARE
+    ;
+
 enumLabel
     : IDENTIFIER_UPPER
     | IDENTIFIER_UPPER LPAREN STRING RPAREN
@@ -169,10 +212,14 @@ configbody
    | cacheProvider
    | buildTool
    | clientFramework
+   | languages
+   | searchEngine
    | useSass
    | testFrameworks
    | reactive
    | serverPort
+   | enableTranslation
+   | nativeLanguage
    | skipUserManagement)* RCURL
    ;
 
@@ -262,14 +309,11 @@ FIELD_TYPE
     | 'BigDecimal'
 //    | IDENTIFIER
     ;
-APPLICATION_TYPE
-    : 'microservice'
-    | 'gateway'
-    ;
+
 
 AUTHENTICATION_TYPE
     : 'jwt'
-    | 'oauth'
+    | 'oauth2'
     ;
 
 BUILDTOOL_TYPE
@@ -281,6 +325,10 @@ DATABASE_TYPE
     : 'mariadb'
     | 'postgresql'
     | 'mysql'
+    ;
+
+SEARCH_ENGINE
+    : 'elasticsearch'
     ;
 
 CLIENT_TYPE
