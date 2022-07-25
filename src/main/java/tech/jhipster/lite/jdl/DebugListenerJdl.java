@@ -1,11 +1,10 @@
-package com.jdl;
+package tech.jhipster.lite.jdl;
 
-import com.jdl.antlr.JdlParser;
+import tech.jhipster.lite.jdl.antlr.JdlParser;
 import org.antlr.v4.runtime.tree.ParseTree;
-import com.jdl.antlr.JdlBaseListener;
+import tech.jhipster.lite.jdl.antlr.JdlBaseListener;
 
-public class ListenerJdl extends JdlBaseListener {
-
+public class DebugListenerJdl extends JdlBaseListener {
     @Override
     public void exitBaseName(JdlParser.BaseNameContext ctx) {
 //        System.out.println("BaseName : " + ctx.getText());

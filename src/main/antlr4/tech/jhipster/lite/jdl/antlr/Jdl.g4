@@ -42,7 +42,7 @@ enumType
 
 baseName
    : 'baseName' label
-   | 'packageName' label COMMA
+   | 'baseName' label COMMA
    ;
 
 applicationType
