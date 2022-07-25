@@ -1,4 +1,4 @@
-package tech.jhipster.lite.jdl;
+package tech.jhipster.lite.jdl.infrastructure.primary;
 
 import tech.jhipster.lite.jdl.antlr.JdlBaseListener;
 import tech.jhipster.lite.jdl.antlr.JdlParser;
