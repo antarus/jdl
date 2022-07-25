@@ -23,8 +23,8 @@ public class Antlr {
 //        parser.addParseListener(new DebugListenerJdl());
 // Start parsing
         JdlParser.File_Context fc= parser.file_();
-        System.out.println(configListener.getConfigApp());
-
+        System.out.println("Not Managed");
+        configListener.getConfigApp().getNotManaged().forEach(System.out::println);
 //        fc.application().forEach(identifier -> System.out.println(identifier.getText()));
 //        fc.enumType().forEach(identifier -> System.out.println(identifier.getText()));
 //        System.out.println(parser.buildTool().toString());
