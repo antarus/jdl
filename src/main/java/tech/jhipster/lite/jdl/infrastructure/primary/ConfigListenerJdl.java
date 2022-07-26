@@ -6,7 +6,7 @@ import tech.jhipster.lite.jdl.domain.config.*;
 
 public class ConfigListenerJdl extends JdlBaseListener {
 
-    private ConfigApp.ConfigAppBuilder configBuilder = ConfigApp.ConfigAppBuilder.aConfigApp();
+    private ConfigApp.ConfigAppBuilder configBuilder = ConfigApp.configBuilder();
 
     private ConfigApp configApp;
 

@@ -12,7 +12,7 @@ public class ConfigVisitor {
     public static class ConfigVisitorJdl extends JdlBaseVisitor<ConfigApp> {
         @Override
         public ConfigApp visitConfig(JdlParser.ConfigContext ctx) {
-            ConfigApp.ConfigAppBuilder configBuilder = ConfigApp.ConfigAppBuilder.aConfigApp();
+            ConfigApp.ConfigAppBuilder configBuilder = ConfigApp.configBuilder();
 
             if (ctx.configbody().baseName().size() == 0) {
                 throw new RuntimeException(" baseName is mandatory");

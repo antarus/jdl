@@ -6,6 +6,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class ConfigApp {
+
+    public static ConfigAppBuilder configBuilder() {
+        return new ConfigAppBuilder();
+    }
+
     private ConfigBaseName configBaseName;
     private ConfigBasePackage configBasePackage;
     private ConfigBuildTool configBuildTool;
@@ -47,9 +52,6 @@ public class ConfigApp {
         private ConfigAppBuilder() {
         }
 
-        public static ConfigAppBuilder aConfigApp() {
-            return new ConfigAppBuilder();
-        }
 
         public ConfigAppBuilder configBaseName(ConfigBaseName configBaseName) {
             this.configBaseName = configBaseName;

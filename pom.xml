@@ -12,7 +12,7 @@
         <java.version>17</java.version>
         <antlr.version>4.10.1</antlr.version>
         <mojo.version>3.0.0</mojo.version>
-
+        <version.roaster>2.26.0.Final</version.roaster>
         <guava.version>31.1-jre</guava.version>
         <compiler-plugin.version>3.10.1</compiler-plugin.version>
     </properties>
@@ -52,6 +52,22 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.12.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.forge.roaster</groupId>
+            <artifactId>roaster-api</artifactId>
+            <version>${version.roaster}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.forge.roaster</groupId>
+            <artifactId>roaster-jdt</artifactId>
+            <version>${version.roaster}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup</groupId>
+            <artifactId>javapoet</artifactId>
+            <version>1.13.0</version>
         </dependency>
     </dependencies>
 
