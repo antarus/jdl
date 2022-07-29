@@ -7,10 +7,7 @@ import tech.jhipster.lite.jdl.domain.config.ConfigApp;
 import tech.jhipster.lite.jdl.domain.config.ConfigBaseName;
 import tech.jhipster.lite.jdl.domain.config.ConfigBasePackage;
 import tech.jhipster.lite.jdl.domain.config.ConfigBuildTool;
-import tech.jhipster.lite.jdl.domain.entity.Entity;
-import tech.jhipster.lite.jdl.domain.entity.EntityName;
-import tech.jhipster.lite.jdl.domain.entity.EntityPackage;
-import tech.jhipster.lite.jdl.domain.entity.EntityTableName;
+import tech.jhipster.lite.jdl.domain.entity.*;
 import tech.jhipster.lite.jdl.domain.entity.field.Field;
 
 public class EntityVisitor {
@@ -32,6 +29,10 @@ public class EntityVisitor {
             String entityBase=configApp.getConfigEntityPath().get();
             packag=packag.concat("."+entityBase);
             entityBuilder.packag(new EntityPackage(packag));
+            if (ctx.beforeEntity()!= null){
+                BeforeEntityVisitor beforeEntityVisitor = new BeforeEntityVisitor(entityBuilder);
+                beforeEntityVisitor.visitBeforeEntity(ctx.beforeEntity());
+            }
             String tableName = ctx.IDENTIFIER().getText();
             if (ctx.entityTableName() != null) {
                 if (ctx.entityTableName().IDENTIFIER() != null) {
@@ -50,7 +51,34 @@ public class EntityVisitor {
 
 
     }
+    private static class BeforeEntityVisitor extends JdlBaseVisitor<Entity.EntityBuilder > {
+        private Entity.EntityBuilder entityBuilder;
+        public BeforeEntityVisitor(Entity.EntityBuilder entityBuilder ) {
+            Assert.notNull("entityBuilder", entityBuilder);
+            this.entityBuilder = entityBuilder;
+        }
 
+        @Override
+        public Entity.EntityBuilder  visitBeforeEntity(JdlParser.BeforeEntityContext ctx) {
+            if (ctx.comment()!= null){
+                this.entityBuilder.comment(new EntityComment(ctx.comment().getText()));
+            }
+            if (ctx.annotation() != null && ctx.annotation().size()>0) {
+                ctx.annotation().stream().forEach(annotationContext -> {
+                    if (annotationContext.getText().contains("service") ||
+                            annotationContext.getText().contains("paginate") ||
+                            annotationContext.label() != null
+                    ) {
+                        System.out.println("TODO , manage Option by annotation " + annotationContext.getText());
+                    }
+//                    System.out.println(annotationContext.getText());
+//                    System.out.println(annotationContext.label());
+//                    System.out.println(annotationContext.IDENTIFIER());
+                });
+            }
+            return entityBuilder;
+        }
+    }
     private static class BaseNameVisitor extends JdlBaseVisitor<ConfigBaseName> {
         @Override
         public ConfigBaseName visitBaseName(JdlParser.BaseNameContext ctx) {

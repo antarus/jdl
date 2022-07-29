@@ -8,7 +8,9 @@ public class DebugListenerJdl extends JdlBaseListener {
     @Override
     public void exitBaseName(JdlParser.BaseNameContext ctx) {
 //        System.out.println("BaseName : " + ctx.getText());
-        System.out.println("BaseName : " + ctx.label().getText());
+        if ( ctx.label() != null) {
+            System.out.println("BaseName : " + ctx.label().getText());
+        }
         super.exitBaseName(ctx);
 
     }

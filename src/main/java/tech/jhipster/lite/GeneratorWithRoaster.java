@@ -39,11 +39,20 @@ public class GeneratorWithRoaster {
 
     public static void generateEntity(Entity entity){
         final JavaClassSource javaClass = Roaster.create(JavaClassSource.class);
+        if (entity.getComment() != null) {
+            javaClass.getJavaDoc().setText(entity.getComment().get());
+        }
         javaClass.setPackage(entity.getPackag().get()).setName(entity.getName().get());
         entity.getFields().stream().forEach(field -> {
-            javaClass.addProperty(field.getType().get(), field.getName().get());
+            var property = javaClass.addProperty(field.getType().get(), field.getName().get());
+            if (field.getComment() != null) {
+                property.getField().getJavaDoc().setFullText(field.getComment().get());
+            }
         });
 
+        System.out.println("");
+        System.out.println("Generate Entity 1");
+        System.out.println("");
         System.out.println(javaClass.toString());
     }
 }

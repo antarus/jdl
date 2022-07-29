@@ -14,9 +14,9 @@ config
 
 annotation
     : '@' label
-    | '@' label LPAREN label RPAREN
-    | '@service' LPAREN label RPAREN
-    | '@paginate' LPAREN label RPAREN
+    | '@' label LPAREN IDENTIFIER RPAREN
+    | '@service' LPAREN IDENTIFIER RPAREN
+    | '@paginate' LPAREN IDENTIFIER RPAREN
     ;
 
 entities
@@ -460,8 +460,6 @@ MULTILINESTRING
    : '<<-EOF' .*? 'EOF'
    ;
 
-STRING_LITERAL: 'a'..'z' | 'A'..'Z' | '0'..'9' | ':' | DOT | '&' | LPAREN | RPAREN | LSQUARE | RSQUARE| '$' | '@' | '/' | '\\' | ';' |  '^';
-
 
 STRING
    : '"' ( '\\"' | ~["\r\n] )* '"'
@@ -474,6 +472,14 @@ IDENTIFIER_UPPER
 
 fragment IDENTIFIER_NODE: [a-zA-Z]([a-zA-Z0-9_])* ;
 IDENTIFIER: IDENTIFIER_NODE ('.' IDENTIFIER_NODE)*;
+
+//STRING_LITERALS
+//    : STRING_LITERAL+
+//    ;
+
+STRING_LITERAL: 'a'..'z' | 'A'..'Z' | '0'..'9' | ':' | DOT | '&' | LPAREN | RPAREN | LSQUARE | RSQUARE| '$' | '@' | '/' | '\\' | ';' |  '^';
+
+
 
 COMMENT
   : ('#' | '//') ~ [\r\n]* -> channel(HIDDEN)
