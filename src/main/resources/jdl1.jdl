@@ -23,12 +23,25 @@ application {
 
 // JDL definition for application 'TwentyOnePoints' generated with command 'jhipster export-jdl'
 
-entity BloodPressure {
+@readOnly
+@dto(mapstruct)
+@service(serviceImpl)
+@paginate(pager)
+/*
+test comment
+*/
+entity BloodPressure(blood) {
   timestamp ZonedDateTime required
   systolic Integer required
   diastolic Integer required
 }
+/*
+test comment
+*/
 entity Weight {
+/*
+test timestamp
+*/
   timestamp ZonedDateTime required
   weight Double required
 }

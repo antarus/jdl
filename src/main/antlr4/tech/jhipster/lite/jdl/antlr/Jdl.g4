@@ -1,7 +1,7 @@
 grammar Jdl;
 
 file_
-   : (config | application | enumType | entity | relationship | paginate | service)+ EOF
+   : (config | application | enumType | entity | relationship | paginate | service | comment )+ EOF
    ;
 
 application
@@ -12,13 +12,32 @@ config
    : 'config'  configbody
    ;
 
+annotation
+    : '@' label
+    | '@' label LPAREN label RPAREN
+    | '@service' LPAREN label RPAREN
+    | '@paginate' LPAREN label RPAREN
+    ;
+
 entities
     : 'entities' STAR
     | 'entities' label (COMMA label)*
     ;
 
 entity
-    : 'entity' IDENTIFIER entityBody
+    : beforeEntity IDENTIFIER entityBody
+    | beforeEntity IDENTIFIER entityTableName entityBody
+    ;
+
+entityTableName
+    : LPAREN IDENTIFIER RPAREN
+    ;
+
+beforeEntity
+    : 'entity'
+    | (annotation)* 'entity'
+    | comment (annotation)* 'entity'
+    | (annotation)* comment 'entity'
     ;
 
 relationship
@@ -32,9 +51,6 @@ paginate
     : 'paginate' label (COMMA label)* 'with' paginatewith
     ;
 
-service
-    : 'service' label 'with' servicewith
-    ;
 
 enumType
     : 'enum' IDENTIFIER enumBody
@@ -70,6 +86,7 @@ cacheProvider
     : 'cacheProvider' BOOL
     | 'cacheProvider' BOOL COMMA
     ;
+
 buildTool
     : 'buildTool' BUILDTOOL_TYPE
     | 'buildTool' BUILDTOOL_TYPE COMMA
@@ -169,11 +186,14 @@ identifierProperty
     ;
 
 field
-    : IDENTIFIER FIELD_TYPE
-    | IDENTIFIER FIELD_TYPE (minmax)*
-    | IDENTIFIER FIELD_TYPE (validation)*
-    | IDENTIFIER FIELD_TYPE (validation)* (minmax)*
-    | IDENTIFIER IDENTIFIER (validation)*
+    : comment? IDENTIFIER FIELD_TYPE
+    | comment? IDENTIFIER FIELD_TYPE (minmax)*
+    | comment? IDENTIFIER FIELD_TYPE (validation)*
+    | comment? IDENTIFIER FIELD_TYPE (validation)* (minmax)*
+    | comment? IDENTIFIER IDENTIFIER (minmax)*
+    | comment? IDENTIFIER IDENTIFIER (minmax)*
+    | comment? IDENTIFIER IDENTIFIER (validation)*
+    | comment? IDENTIFIER IDENTIFIER (validation)* (minmax)*
     ;
 
 testFrameworksBody
@@ -200,7 +220,6 @@ label
 applicationbody
   : LCURL (config | entities)* RCURL
   ;
-
 
 configbody
    : LCURL (baseName
@@ -232,10 +251,18 @@ paginatewith
     | 'infinite-scroll'
     ;
 
-
 servicewith
     : 'serviceClass'
     ;
+
+service
+    : 'service' label 'with' servicewith
+    ;
+
+comment
+    : BLOCKCOMMENT
+    ;
+
 //   : LCURL (argument | block)* RCURL
 
 //identifier
@@ -258,11 +285,11 @@ servicewith
 //   : NATURAL_NUMBER
 //   ;
 
-expression
-   : expression operator_ expression
-   | LPAREN expression RPAREN
-   | expression '?' expression ':' expression
-   ;
+//expression
+//   : expression operator_ expression
+//   | LPAREN expression RPAREN
+//   | expression '?' expression ':' expression
+//   ;
 
 string
    : STRING
@@ -307,9 +334,7 @@ FIELD_TYPE
     | 'Instant'
     | 'Integer'
     | 'BigDecimal'
-//    | IDENTIFIER
     ;
-
 
 AUTHENTICATION_TYPE
     : 'jwt'
@@ -447,14 +472,13 @@ IDENTIFIER_UPPER
 
 fragment IDENTIFIER_NODE: [a-zA-Z]([a-zA-Z0-9_])* ;
 IDENTIFIER: IDENTIFIER_NODE ('.' IDENTIFIER_NODE)*;
-//IDENTIFIER: [a-zA-Z]([a-zA-Z0-9_])* ;
 
 COMMENT
   : ('#' | '//') ~ [\r\n]* -> channel(HIDDEN)
   ;
 
 BLOCKCOMMENT
-  : '/*' .*? '*/' -> channel(HIDDEN)
+  : '/*' .*? '*/'
   ;
 
 WS

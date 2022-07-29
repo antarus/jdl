@@ -1,6 +1,7 @@
 package tech.jhipster.lite;
 
 import tech.jhipster.lite.jdl.domain.config.ConfigApp;
+import tech.jhipster.lite.jdl.domain.entity.Entity;
 import tech.jhipster.lite.jdl.infrastructure.primary.ConfigListenerJdl;
 
 import tech.jhipster.lite.jdl.antlr.JdlLexer;
@@ -9,6 +10,7 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import tech.jhipster.lite.jdl.infrastructure.primary.ConfigVisitor;
 import tech.jhipster.lite.jdl.infrastructure.primary.DebugListenerJdl;
+import tech.jhipster.lite.jdl.infrastructure.primary.EntityVisitor;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,9 +39,12 @@ public class Antlr {
 
     private static void visitorMode(JdlParser parser) throws IOException {
         ConfigVisitor.ConfigVisitorJdl configVisitor = new ConfigVisitor.ConfigVisitorJdl();
+        EntityVisitor.EntityVisitorJdl entityVisitor = new EntityVisitor.EntityVisitorJdl();
         JdlParser.File_Context fc = parser.file_();
-        ConfigApp config = configVisitor.visitConfig(fc.application(0).applicationbody().config(0));
-        System.out.println(config);
+//        ConfigApp config = configVisitor.visitConfig(fc.application(0).applicationbody().config(0));
+//        System.out.println(config);
+        Entity entity = entityVisitor.visitEntity(fc.entity(0));
+        System.out.println(entity);
 //        fc.application().forEach(identifier -> System.out.println(identifier.getText()));
 //        fc.enumType().forEach(identifier -> System.out.println(identifier.getText()));
 //        System.out.println(parser.buildTool().toString());
