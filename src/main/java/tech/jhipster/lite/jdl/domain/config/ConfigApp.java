@@ -13,6 +13,7 @@ public class ConfigApp {
 
     private ConfigBaseName configBaseName;
     private ConfigBasePackage configBasePackage;
+    private ConfigEntityPath configEntityPath;
     private ConfigBuildTool configBuildTool;
 
     private Collection<ConfigNotManaged> notManaged;
@@ -33,11 +34,16 @@ public class ConfigApp {
         return notManaged;
     }
 
+    public ConfigEntityPath getConfigEntityPath() {
+        return configEntityPath;
+    }
+
     @Override
     public String toString() {
         return "ConfigApp{" +
                 "configBaseName=" + configBaseName +
                 ", configBasePackage=" + configBasePackage +
+                ", configEntityPath=" + configEntityPath +
                 ", configBuildTool=" + configBuildTool +
                 ", notManaged=" + notManaged +
                 '}';
@@ -46,8 +52,9 @@ public class ConfigApp {
     public static final class ConfigAppBuilder {
         private ConfigBaseName configBaseName;
         private ConfigBasePackage configBasePackage;
+        private ConfigEntityPath configEntityPath;
         private ConfigBuildTool configBuildTool;
-        private Collection<ConfigNotManaged> notManaged = new ArrayList<>();
+        private final Collection<ConfigNotManaged> notManaged = new ArrayList<>();
 
         private ConfigAppBuilder() {
         }
@@ -76,8 +83,15 @@ public class ConfigApp {
 
         public ConfigApp build() {
             ConfigApp configApp = new ConfigApp();
+            if (this.configBasePackage == null) {
+                this.configBasePackage = new ConfigBasePackage("");
+            }
+            if (this.configEntityPath == null) {
+                this.configEntityPath = new ConfigEntityPath("");
+            }
             configApp.configBuildTool = this.configBuildTool;
             configApp.configBasePackage = this.configBasePackage;
+            configApp.configEntityPath = this.configEntityPath;
             configApp.notManaged = this.notManaged;
             configApp.configBaseName = this.configBaseName;
             return configApp;

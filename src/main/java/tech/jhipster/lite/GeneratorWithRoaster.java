@@ -2,6 +2,7 @@ package tech.jhipster.lite;
 
 import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
+import tech.jhipster.lite.jdl.domain.entity.Entity;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -32,6 +33,16 @@ public class GeneratorWithRoaster {
                 .setPublic()
                 .setBody("this.id = id;")
                 .addParameter(Integer.class, "id");
+
+        System.out.println(javaClass.toString());
+    }
+
+    public static void generateEntity(Entity entity){
+        final JavaClassSource javaClass = Roaster.create(JavaClassSource.class);
+        javaClass.setPackage(entity.getPackag().get()).setName(entity.getName().get());
+        entity.getFields().stream().forEach(field -> {
+            javaClass.addProperty(field.getType().get(), field.getName().get());
+        });
 
         System.out.println(javaClass.toString());
     }

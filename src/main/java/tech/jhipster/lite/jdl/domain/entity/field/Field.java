@@ -14,12 +14,49 @@ public class Field {
     private FieldName name;
     private List<Modifier> modifiers;
     private FieldComment comment;
+    private FieldType type;
     private List<FieldValidation>validations;
     private List<FieldValidator>validators;
 
+    public FieldName getName() {
+        return name;
+    }
+
+    public List<Modifier> getModifiers() {
+        return modifiers;
+    }
+
+    public FieldComment getComment() {
+        return comment;
+    }
+
+    public FieldType getType() {
+        return type;
+    }
+
+    public List<FieldValidation> getValidations() {
+        return validations;
+    }
+
+    public List<FieldValidator> getValidators() {
+        return validators;
+    }
+
+    @Override
+    public String toString() {
+        return "Field{" +
+                "name=" + name +
+                ", modifiers=" + modifiers +
+                ", comment=" + comment +
+                ", type=" + type +
+                ", validations=" + validations +
+                ", validators=" + validators +
+                '}';
+    }
 
     public static final class FieldBuilder {
         private FieldName name;
+        private FieldType type;
         private final List<Modifier> modifiers = new ArrayList<>();
         private FieldComment comment;
         private final List<FieldValidation> validations = new ArrayList<>();
@@ -42,7 +79,10 @@ public class Field {
             this.comment = comment;
             return this;
         }
-
+        public FieldBuilder type(FieldType type) {
+            this.type = type;
+            return this;
+        }
         public FieldBuilder addValidation(FieldValidation validation) {
             Assert.notNull("validation", validation);
             this.validations.add(validation);
@@ -60,6 +100,7 @@ public class Field {
             field.name = this.name;
             field.validators = this.validators;
             field.comment = this.comment;
+            field.type = this.type;
             if (this.modifiers.isEmpty()){
                 this.modifiers.add(Modifier.PRIVATE);
             }

@@ -31,6 +31,9 @@ application {
 test comment
 */
 entity BloodPressure(blood) {
+/*
+javadoc timestamp
+*/
   timestamp ZonedDateTime required
   systolic Integer required
   diastolic Integer required

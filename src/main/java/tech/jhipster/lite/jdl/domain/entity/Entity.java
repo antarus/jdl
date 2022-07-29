@@ -14,14 +14,37 @@ public class Entity {
     }
 
     private EntityName name;
+
+    private EntityPackage packag;
     private List<Field> fields;
     private EntityComment comment;
     private EntityTableName tableName;
+
+    public EntityName getName() {
+        return name;
+    }
+
+    public EntityPackage getPackag() {
+        return packag;
+    }
+
+    public List<Field> getFields() {
+        return fields;
+    }
+
+    public EntityComment getComment() {
+        return comment;
+    }
+
+    public EntityTableName getTableName() {
+        return tableName;
+    }
 
     @Override
     public String toString() {
         return "Entity{" +
                 "name=" + name +
+                ", package=" + packag +
                 ", fields=" + fields +
                 ", comment=" + comment +
                 ", tableName=" + tableName +
@@ -30,6 +53,7 @@ public class Entity {
 
     public static final class EntityBuilder {
         private EntityName name;
+        private EntityPackage packag;
         private final List<Field> fields=new ArrayList<>();
         private EntityComment comment;
         private EntityTableName tableName;
@@ -47,7 +71,7 @@ public class Entity {
             return this;
         }
 
-        public EntityBuilder addFields(Field field) {
+        public EntityBuilder addField(Field field) {
             Assert.notNull("field", field);
             this.fields.add(field);
             return this;
@@ -64,13 +88,21 @@ public class Entity {
             this.tableName = tableName;
             return this;
         }
-
+        public EntityBuilder packag(EntityPackage packag) {
+            Assert.notNull("packag", packag);
+            this.packag = packag;
+            return this;
+        }
         public Entity build() {
             Entity entity = new Entity();
+            if (this.packag==null){
+                this.packag=new EntityPackage("");
+            }
             entity.tableName = this.tableName;
             entity.fields = this.fields;
             entity.comment = this.comment;
             entity.name = this.name;
+            entity.packag = this.packag;
             return entity;
         }
     }

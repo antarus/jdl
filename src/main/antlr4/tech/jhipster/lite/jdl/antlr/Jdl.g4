@@ -334,6 +334,8 @@ FIELD_TYPE
     | 'Instant'
     | 'Integer'
     | 'BigDecimal'
+    | 'Duration'
+    | 'Period'
     ;
 
 AUTHENTICATION_TYPE
