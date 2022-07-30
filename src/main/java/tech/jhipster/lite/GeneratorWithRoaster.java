@@ -1,8 +1,8 @@
 package tech.jhipster.lite;
 
 import org.jboss.forge.roaster.Roaster;
-import org.jboss.forge.roaster.model.Method;
 import org.jboss.forge.roaster.model.source.AnnotationSource;
+import org.jboss.forge.roaster.model.source.FieldSource;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jboss.forge.roaster.model.source.MethodSource;
 import org.springframework.util.StringUtils;
@@ -52,13 +52,31 @@ public class GeneratorWithRoaster {
         }
         javaClass.setPackage(entity.getPackag().get()).setName(entity.getName().get());
 
-//        tableAnnotation= tableAnnotation.setName("Table").removeAllValues().setStringValue("d=d");
-//        tableAnnotation.s
-//        tableAnnotation.addAnnotationValue("blog");
         entity.getFields().stream().forEach(field -> {
             var property = javaClass.addProperty(field.getType().get(), field.getName().get());
             if (field.getComment() != null) {
                 property.getField().getJavaDoc().setFullText(field.getComment().get());
+            }
+            if (field.hasValidator()){
+                javaClass.addImport("javax.validation.constraints.*");
+                field.getValidators().stream().forEach(fieldValidator -> {
+                    AnnotationSource<JavaClassSource> fieldAnnotation = property.getField().addAnnotation();
+                    switch (fieldValidator.name()){
+                        case "minlength" ->fieldAnnotation.setLiteralValue("min", String.valueOf(fieldValidator.value())).setName("Size");
+                        case "maxlength" ->fieldAnnotation.setLiteralValue("max", String.valueOf(fieldValidator.value())).setName("Size");
+                        default -> throw new RuntimeException("Validator not mananged yet " + fieldValidator.name());
+                    }
+                });
+            }
+            if (field.hasValidation()){
+
+                field.getValidations().stream().forEach(fieldValidation -> {
+                    AnnotationSource<JavaClassSource>  fieldAnnotation = property.getField().addAnnotation();
+                    switch (fieldValidation.name()){
+                        case "required" ->fieldAnnotation.setName("NotNull");
+                        default -> throw new RuntimeException("Validator not mananged yet " + fieldValidation.name());
+                    }
+                });
             }
             if (generateFluent){
                 MethodSource fluentMethod =javaClass.addMethod()
@@ -97,7 +115,6 @@ public class GeneratorWithRoaster {
                 throw new RuntimeException("field manquant :" + field.getName());
             }
             EntityField entityField = optEntityField.get();
-//            @Column(name = "name", nullable = false)
 
             AnnotationSource fieldAnnotation = field.addAnnotation().setLiteralValue("name", EntityUtils.addQuote(field.getName()));
             if (entityField.isRequired()) {
@@ -106,6 +123,42 @@ public class GeneratorWithRoaster {
             fieldAnnotation.setName("Column");
 
         });
+
+        FieldSource idField = javaClass.addProperty(Long.class, "id").getField();
+        idField.addAnnotation("Id");
+        idField.addAnnotation().setLiteralValue("strategy","GenerationType.SEQUENCE").setLiteralValue("generator", "sequenceGenerator").setName("GeneratedValue");
+        idField.addAnnotation().setLiteralValue("name", EntityUtils.addQuote("sequenceGenerator")).setName("SequenceGenerator");
+        idField.addAnnotation().setLiteralValue("name", EntityUtils.addQuote("id")).setName("Column");
+
+        javaClass.addMethod()
+                .setName("equals")
+                .setReturnType(boolean.class)
+                .setPublic()
+                .setBody("""
+                                if (this == o) {
+                                    return true;
+                                }
+                                if (!(o instanceof {{CLASS}})) {
+                                    return false;
+                                }
+                                return id != null && id.equals((({{CLASS}}) o).id);
+                            """.replace("{{CLASS}}", entity.getName().get() )).addAnnotation("Override");
+
+        javaClass.addMethod()
+                .setName("hashCode")
+                .setReturnType(int.class)
+                .setPublic()
+                .setBody("""
+                                // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+                                return getClass().hashCode();
+                            """).addAnnotation("Override");
+
+
+
+
+
+        var importList = javaClass.getImports().stream().distinct().toList();
+        importList.stream().forEach(i -> javaClass.removeImport(i).addImport(i));
 
         System.out.println("");
         System.out.println("Generate Entity 1");

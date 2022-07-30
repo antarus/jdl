@@ -26,11 +26,11 @@ private boolean hasValidation;
         return isRequired;
     }
 
-    public boolean isHasValidator() {
+    public boolean hasValidator() {
         return hasValidator;
     }
 
-    public boolean isHasValidation() {
+    public boolean hasValidation() {
         return hasValidation;
     }
 

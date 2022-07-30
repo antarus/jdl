@@ -30,13 +30,15 @@ application {
 /*
 test comment
 */
-entity BloodPressure(blood) {
+entity bloodPressure(blood) {
 /*
 javadoc timestamp
 */
   timestamp ZonedDateTime required
   systolic Integer required
   diastolic Integer required
+    name String required maxlength(150)
+    handle String required minlength(2)
 }
 /*
 test comment

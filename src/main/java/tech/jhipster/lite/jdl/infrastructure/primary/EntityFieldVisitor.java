@@ -44,16 +44,16 @@ public class EntityFieldVisitor {
         @Override
         public FieldValidator visitMinmax(JdlParser.MinmaxContext ctx) {
             if (ctx.minValidator() != null) {
-                String name = ctx.minValidator().getText();
+                String name = ctx.minValidator().getChild(0).getText();
                 String value = ctx.minValidator().NATURAL_NUMBER().getText();
-                return new FieldValidator(name, Integer.getInteger(value));
+                return new FieldValidator(name, Integer.parseInt(value));
             }
             if (ctx.maxValidator() != null) {
-                String name = ctx.maxValidator().getText();
+                String name = ctx.maxValidator().getChild(0).getText();
                 String value = ctx.maxValidator().NATURAL_NUMBER().getText();
-                return new FieldValidator(name, Integer.getInteger(value));
+                return new FieldValidator(name, Integer.parseInt(value));
             }
-            throw new RuntimeException("No mimn Max validator");
+            throw new RuntimeException("No min Max validator");
         }
     }
 

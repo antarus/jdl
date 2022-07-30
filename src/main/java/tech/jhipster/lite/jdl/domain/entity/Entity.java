@@ -1,5 +1,6 @@
 package tech.jhipster.lite.jdl.domain.entity;
 
+import org.springframework.util.StringUtils;
 import tech.jhipster.lite.error.domain.Assert;
 import tech.jhipster.lite.jdl.domain.entity.field.*;
 
@@ -37,6 +38,8 @@ public class Entity {
     public EntityTableName getTableName() {
         return tableName;
     }
+
+
 
     @Override
     public String toString() {
