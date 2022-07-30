@@ -9,10 +9,10 @@ import java.util.regex.Pattern;
 
 public class EntityFieldVisitor {
 
-    public static class EntityFieldJdl extends JdlBaseVisitor<Field> {
+    public static class EntityFieldJdl extends JdlBaseVisitor<EntityField> {
         @Override
-        public Field visitField(JdlParser.FieldContext ctx) {
-            Field.FieldBuilder fieldBuilder = Field.fieldBuilder();
+        public EntityField visitField(JdlParser.FieldContext ctx) {
+            EntityField.FieldBuilder fieldBuilder = EntityField.fieldBuilder();
             fieldBuilder.name(new FieldName(ctx.IDENTIFIER(0).getText()));
             if (ctx.comment() != null) {
                 String comment = ctx.comment().getText();

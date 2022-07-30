@@ -1,10 +1,8 @@
 package tech.jhipster.lite.jdl.domain.entity;
 
 import tech.jhipster.lite.error.domain.Assert;
-import tech.jhipster.lite.jdl.domain.config.ConfigApp;
 import tech.jhipster.lite.jdl.domain.entity.field.*;
 
-import javax.lang.model.element.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +14,7 @@ public class Entity {
     private EntityName name;
 
     private EntityPackage packag;
-    private List<Field> fields;
+    private List<EntityField> entityFields;
     private EntityComment comment;
     private EntityTableName tableName;
 
@@ -28,8 +26,8 @@ public class Entity {
         return packag;
     }
 
-    public List<Field> getFields() {
-        return fields;
+    public List<EntityField> getFields() {
+        return entityFields;
     }
 
     public EntityComment getComment() {
@@ -45,7 +43,7 @@ public class Entity {
         return "Entity{" +
                 "name=" + name +
                 ", package=" + packag +
-                ", fields=" + fields +
+                ", fields=" + entityFields +
                 ", comment=" + comment +
                 ", tableName=" + tableName +
                 '}';
@@ -54,7 +52,7 @@ public class Entity {
     public static final class EntityBuilder {
         private EntityName name;
         private EntityPackage packag;
-        private final List<Field> fields=new ArrayList<>();
+        private final List<EntityField> entityFields =new ArrayList<>();
         private EntityComment comment;
         private EntityTableName tableName;
 
@@ -71,9 +69,9 @@ public class Entity {
             return this;
         }
 
-        public EntityBuilder addField(Field field) {
-            Assert.notNull("field", field);
-            this.fields.add(field);
+        public EntityBuilder addField(EntityField entityField) {
+            Assert.notNull("field", entityField);
+            this.entityFields.add(entityField);
             return this;
         }
 
@@ -99,7 +97,7 @@ public class Entity {
                 this.packag=new EntityPackage("");
             }
             entity.tableName = this.tableName;
-            entity.fields = this.fields;
+            entity.entityFields = this.entityFields;
             entity.comment = this.comment;
             entity.name = this.name;
             entity.packag = this.packag;

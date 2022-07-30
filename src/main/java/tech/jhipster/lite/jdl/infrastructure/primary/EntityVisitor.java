@@ -8,7 +8,6 @@ import tech.jhipster.lite.jdl.domain.config.ConfigBaseName;
 import tech.jhipster.lite.jdl.domain.config.ConfigBasePackage;
 import tech.jhipster.lite.jdl.domain.config.ConfigBuildTool;
 import tech.jhipster.lite.jdl.domain.entity.*;
-import tech.jhipster.lite.jdl.domain.entity.field.Field;
 
 public class EntityVisitor {
     public static class EntityVisitorJdl extends JdlBaseVisitor<Entity> {

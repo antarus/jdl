@@ -6,7 +6,7 @@ import javax.lang.model.element.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Field {
+public class EntityField {
 
     public static FieldBuilder fieldBuilder() {
         return new FieldBuilder();
@@ -17,6 +17,22 @@ public class Field {
     private FieldType type;
     private List<FieldValidation>validations;
     private List<FieldValidator>validators;
+
+private boolean isRequired;
+private boolean hasValidator;
+private boolean hasValidation;
+
+    public boolean isRequired() {
+        return isRequired;
+    }
+
+    public boolean isHasValidator() {
+        return hasValidator;
+    }
+
+    public boolean isHasValidation() {
+        return hasValidation;
+    }
 
     public FieldName getName() {
         return name;
@@ -95,18 +111,21 @@ public class Field {
             return this;
         }
 
-        public Field build() {
-            Field field = new Field();
-            field.name = this.name;
-            field.validators = this.validators;
-            field.comment = this.comment;
-            field.type = this.type;
+        public EntityField build() {
+            EntityField entityField = new EntityField();
+            entityField.name = this.name;
+            entityField.validators = this.validators;
+            entityField.hasValidator = !this.validators.isEmpty();
+            entityField.hasValidation = !this.validations.isEmpty();
+            entityField.isRequired = this.validations.stream().filter(f-> f.equals(FieldValidation.REQUIRED)).findFirst().isPresent();
+            entityField.comment = this.comment;
+            entityField.type = this.type;
             if (this.modifiers.isEmpty()){
                 this.modifiers.add(Modifier.PRIVATE);
             }
-            field.modifiers = this.modifiers;
-            field.validations = this.validations;
-            return field;
+            entityField.modifiers = this.modifiers;
+            entityField.validations = this.validations;
+            return entityField;
         }
     }
 }

@@ -166,7 +166,7 @@ enumBody
     ;
 
 entityBody
-    : LCURL (field)*  RCURL
+    : LCURL (entityField)*  RCURL
     ;
 
 relationShipBody
@@ -185,7 +185,7 @@ identifierProperty
     | IDENTIFIER LPAREN IDENTIFIER RPAREN
     ;
 
-field
+entityField
     : comment? IDENTIFIER FIELD_TYPE
     | comment? IDENTIFIER FIELD_TYPE (minmax)*
     | comment? IDENTIFIER FIELD_TYPE (validation)*

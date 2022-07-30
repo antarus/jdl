@@ -1,5 +1,6 @@
 package tech.jhipster.lite;
 
+import org.jboss.forge.roaster.model.source.JavaClassSource;
 import tech.jhipster.lite.jdl.domain.config.ConfigApp;
 import tech.jhipster.lite.jdl.domain.entity.Entity;
 import tech.jhipster.lite.jdl.infrastructure.primary.ConfigListenerJdl;
@@ -8,7 +9,6 @@ import tech.jhipster.lite.jdl.antlr.JdlLexer;
 import tech.jhipster.lite.jdl.antlr.JdlParser;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
-import tech.jhipster.lite.jdl.infrastructure.primary.ConfigVisitor;
 import tech.jhipster.lite.jdl.infrastructure.primary.DebugListenerJdl;
 import tech.jhipster.lite.jdl.infrastructure.primary.EntityVisitor;
 
@@ -46,7 +46,8 @@ public class Antlr {
 //        System.out.println(config);
         Entity entity = entityVisitor.visitEntity(fc.entity(0));
 
-        GeneratorWithRoaster.generateEntity(entity);
+        JavaClassSource javaClass= GeneratorWithRoaster.generateBaseEntity(entity);
+        GeneratorWithRoaster.updateEntityToEntityJpa(javaClass,entity);
 
 //        System.out.println(entity);
 //        fc.application().forEach(identifier -> System.out.println(identifier.getText()));
