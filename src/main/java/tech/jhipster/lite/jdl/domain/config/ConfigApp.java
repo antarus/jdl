@@ -11,12 +11,16 @@ public class ConfigApp {
         return new ConfigAppBuilder();
     }
 
+    private ConfigFluentMethod fluentMethod;
+
     private ConfigBaseName configBaseName;
     private ConfigBasePackage configBasePackage;
     private ConfigEntityPath configEntityPath;
     private ConfigBuildTool configBuildTool;
 
     private Collection<ConfigNotManaged> notManaged;
+
+
 
     public ConfigBaseName getConfigBaseName() {
         return configBaseName;
@@ -38,10 +42,15 @@ public class ConfigApp {
         return configEntityPath;
     }
 
+    public ConfigFluentMethod getFluentMethod() {
+        return fluentMethod;
+    }
+
     @Override
     public String toString() {
         return "ConfigApp{" +
-                "configBaseName=" + configBaseName +
+                "fluentMethod=" + fluentMethod +
+                ", configBaseName=" + configBaseName +
                 ", configBasePackage=" + configBasePackage +
                 ", configEntityPath=" + configEntityPath +
                 ", configBuildTool=" + configBuildTool +
@@ -50,6 +59,7 @@ public class ConfigApp {
     }
 
     public static final class ConfigAppBuilder {
+        private ConfigFluentMethod fluentMethod;
         private ConfigBaseName configBaseName;
         private ConfigBasePackage configBasePackage;
         private ConfigEntityPath configEntityPath;
@@ -59,6 +69,10 @@ public class ConfigApp {
         private ConfigAppBuilder() {
         }
 
+        public ConfigAppBuilder fluentMethod(ConfigFluentMethod fluentMethod) {
+            this.fluentMethod = fluentMethod;
+            return this;
+        }
 
         public ConfigAppBuilder configBaseName(ConfigBaseName configBaseName) {
             this.configBaseName = configBaseName;
@@ -83,12 +97,16 @@ public class ConfigApp {
 
         public ConfigApp build() {
             ConfigApp configApp = new ConfigApp();
+            if (this.fluentMethod == null) {
+                this.fluentMethod = new ConfigFluentMethod(true);
+            }
             if (this.configBasePackage == null) {
                 this.configBasePackage = new ConfigBasePackage("");
             }
             if (this.configEntityPath == null) {
                 this.configEntityPath = new ConfigEntityPath("");
             }
+            configApp.fluentMethod=this.fluentMethod;
             configApp.configBuildTool = this.configBuildTool;
             configApp.configBasePackage = this.configBasePackage;
             configApp.configEntityPath = this.configEntityPath;

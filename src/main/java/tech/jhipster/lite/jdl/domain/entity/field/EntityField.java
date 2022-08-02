@@ -11,6 +11,9 @@ public class EntityField {
     public static FieldBuilder fieldBuilder() {
         return new FieldBuilder();
     }
+    private EntityField(){
+
+    }
     private FieldName name;
     private List<Modifier> modifiers;
     private FieldComment comment;

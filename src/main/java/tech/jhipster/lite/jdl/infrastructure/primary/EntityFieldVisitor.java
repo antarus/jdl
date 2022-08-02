@@ -14,9 +14,6 @@ public class EntityFieldVisitor {
         @Override
         public EntityField visitEntityField(JdlParser.EntityFieldContext ctx) {
             EntityField.FieldBuilder fieldBuilder = EntityField.fieldBuilder();
-            if (ctx.IDENTIFIER().isEmpty()){
-                return new EntityField();
-            }
 
             fieldBuilder.name(new FieldName(ctx.IDENTIFIER(0).getText()));
             if (ctx.comment() != null &&  !ctx.comment().isEmpty()) {

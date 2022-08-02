@@ -46,7 +46,7 @@ public class Antlr {
 
         RelationShipVisitor.RelationShipVisitorJdl relationShipVisitor = new RelationShipVisitor.RelationShipVisitorJdl(jdlApplicationBuilder);
         EntityVisitor.EntityVisitorJdl entityVisitor = new EntityVisitor.EntityVisitorJdl(jdlApplicationBuilder);
-        
+
         JdlParser.File_Context fc = parser.file_();
 
         fc.relationship().stream().forEach(relationShipVisitor::visitRelations);
@@ -60,8 +60,8 @@ public class Antlr {
 
         Entity entity = jdlApp.getEntities().stream().findFirst().get();
 //
-        JavaClassSource javaClass = GeneratorWithRoaster.generateBaseEntity(entity);
-        GeneratorWithRoaster.updateEntityToEntityJpa(javaClass, entity);
+        JavaClassSource javaClass = GeneratorWithRoaster.generateBaseEntity(entity, jdlApp);
+        GeneratorWithRoaster.updateEntityToEntityJpa(javaClass, entity, jdlApp);
 
 //        System.out.println(entity);
 //        fc.application().forEach(identifier -> System.out.println(identifier.getText()));
