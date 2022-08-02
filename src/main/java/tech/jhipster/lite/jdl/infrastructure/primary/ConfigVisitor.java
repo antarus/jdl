@@ -32,7 +32,6 @@ public class ConfigVisitor {
           return   configBuilder.configBaseName(new BaseNameVisitor().visitBaseName(ctx.configbody().baseName().get(0)))
                     .configBasePackage(new PackageNameVisitor().visitPackageName(ctx.configbody().packageName().get(0)))
                     .configBuildTool(new BuildToolVisitor().visitBuildTool(ctx.configbody().buildTool().get(0))).build();
-
         }
     }
 

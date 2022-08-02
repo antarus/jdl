@@ -52,7 +52,7 @@ test timestamp
 }
 entity Points {
   date LocalDate required
-  exercise Integer 
+  exercise Integer
   meals Integer
   alcohol Integer
   notes String maxlength(140)
@@ -64,18 +64,19 @@ entity Preferences {
 
 enum Units {
   KG,
-  LB
+  L
+}
+
+relationship ManyToOne {
+  Aa to Bb
+  Blog{user(login)} to User
+  Post{blog(name) required} to Blog
+
 }
 
 relationship OneToOne {
   Preferences{user(login)} to User
 }
-relationship ManyToOne {
-  BloodPressure{user(login)} to User
-  Weight{user(login)} to User
-  Points{user(login)} to User
-}
-
 paginate BloodPressure, Weight with infinite-scroll
 paginate Points with pagination
 

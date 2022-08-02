@@ -36,7 +36,14 @@ public class WordUtils {
     result.append(value.substring(1));
     return result.toString();
   }
+  public static String lowerFirst(String value) {
+    Assert.notBlank(VALUE_FIELD, value);
 
+    StringBuilder result = new StringBuilder();
+    result.append(value.substring(0, 1).toLowerCase());
+    result.append(value.substring(1));
+    return result.toString();
+  }
   public static String indent(int times) {
     return indent(times, DEFAULT_INDENTATION);
   }

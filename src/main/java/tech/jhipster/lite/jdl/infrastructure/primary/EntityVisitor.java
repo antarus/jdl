@@ -3,29 +3,27 @@ package tech.jhipster.lite.jdl.infrastructure.primary;
 import tech.jhipster.lite.error.domain.Assert;
 import tech.jhipster.lite.jdl.antlr.JdlBaseVisitor;
 import tech.jhipster.lite.jdl.antlr.JdlParser;
-import tech.jhipster.lite.jdl.domain.config.ConfigApp;
 import tech.jhipster.lite.jdl.domain.config.ConfigBaseName;
 import tech.jhipster.lite.jdl.domain.config.ConfigBasePackage;
 import tech.jhipster.lite.jdl.domain.config.ConfigBuildTool;
 import tech.jhipster.lite.jdl.domain.entity.*;
+import tech.jhipster.lite.jdl.domain.jdl.JdlApplication;
 
 public class EntityVisitor {
     public static class EntityVisitorJdl extends JdlBaseVisitor<Entity> {
 
-        private static ConfigApp configApp;
-        private EntityVisitorJdl() {
-        }
-        public EntityVisitorJdl(ConfigApp configApp) {
-            Assert.notNull("ConfigApp",configApp);
-            this.configApp=configApp;
+        private final JdlApplication.JdlApplicationBuilder jdlApplicationBuilder;
+
+        public EntityVisitorJdl(JdlApplication.JdlApplicationBuilder jdlApplicationBuilder) {
+            Assert.notNull("jdlApplicationBuilder",jdlApplicationBuilder);
+            this.jdlApplicationBuilder = jdlApplicationBuilder;
         }
 
-        @Override
-        public Entity visitEntity(JdlParser.EntityContext ctx) {
+        public void visitEntityContext(JdlParser.EntityContext ctx) {
             Entity.EntityBuilder entityBuilder = Entity.entityBuilder();
             entityBuilder.name(new EntityName(ctx.IDENTIFIER().getText()));
-            String packag = configApp.getConfigBasePackage().get();
-            String entityBase=configApp.getConfigEntityPath().get();
+            String packag = jdlApplicationBuilder.getConfig().getConfigBasePackage().get();
+            String entityBase=jdlApplicationBuilder.getConfig().getConfigEntityPath().get();
             packag=packag.concat("."+entityBase);
             entityBuilder.packag(new EntityPackage(packag));
             if (ctx.beforeEntity()!= null){
@@ -46,7 +44,7 @@ public class EntityVisitor {
                 entityBuilder.addField(fieldVisitor.visitEntityField(fc));
             });
 
-            return entityBuilder.build();
+            jdlApplicationBuilder.addEntity(entityBuilder.build());
         }
 
 

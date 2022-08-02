@@ -1,7 +1,7 @@
 grammar Jdl;
 
 file_
-   : (config | application | enumType | entity | relationship | paginate | service | comment )+ EOF
+   : (config | application |  entity | relationship | paginate | service | enumType | comment )+ EOF
    ;
 
 application
@@ -41,16 +41,12 @@ beforeEntity
     ;
 
 relationship
-    : 'relationship' 'OneToMany' relationShipBody
-    | 'relationship' 'ManyToOne' relationShipBody
-    | 'relationship' 'ManyToMany' relationShipBody
-    | 'relationship' 'OneToOne' relationShipBody
+    : 'relationship' RELATION_SHIP_TYPE relationShipBody
     ;
 
 paginate
     : 'paginate' label (COMMA label)* 'with' paginatewith
     ;
-
 
 enumType
     : 'enum' IDENTIFIER enumBody
@@ -132,9 +128,9 @@ reactive
     | 'reactive' BOOL COMMA
     ;
 
-block
-   : blocktype label* blockbody
-   ;
+//block
+//   : blocktype label* blockbody
+//   ;
 
 serverPort
     : 'serverPort' NATURAL_NUMBER
@@ -156,12 +152,13 @@ enableTranslation
     | 'enableTranslation' BOOL COMMA
     ;
 
-blocktype
-   : IDENTIFIER
-   ;
+//blocktype
+//   : IDENTIFIER
+//   ;
 
 enumBody
     : LCURL enumLabel (COMMA enumLabel)*  RCURL
+    | LCURL (enumLabel COMMA?)* RCURL
     | LCURL enumLabel*  RCURL
     ;
 
@@ -174,11 +171,24 @@ relationShipBody
     ;
 
 relation
-    : IDENTIFIER TO IDENTIFIER
-    | IDENTIFIER LCURL identifierProperty RCURL TO IDENTIFIER
-    | IDENTIFIER LCURL identifierProperty RCURL TO IDENTIFIER LCURL identifierProperty RCURL
-    | IDENTIFIER LCURL identifierProperty RCURL TO IDENTIFIER LCURL identifierProperty RCURL COMMA
+    : relationFrom TO relationTo COMMA?
+//    | relationFrom TO comment? IDENTIFIER COMMA?
+//    | relationFrom TO comment? IDENTIFIER LCURL identifierProperty REQUIRED? RCURL COMMA?
     ;
+
+relationFrom
+    : relationDescribe
+    ;
+
+relationTo
+    : relationDescribe
+    ;
+
+relationDescribe
+    : comment? IDENTIFIER
+    | comment? IDENTIFIER LCURL identifierProperty REQUIRED? RCURL
+    ;
+
 
 identifierProperty
     : IDENTIFIER
@@ -261,9 +271,9 @@ configbody
    | skipUserManagement)* RCURL
    ;
 
-blockbody
-   : LCURL (block)* RCURL
-   ;
+//blockbody
+//   : LCURL (block)* RCURL
+//   ;
 
 paginatewith
     : 'pagination'
@@ -327,7 +337,7 @@ validatorPattern
     ;
 
 validation
-    : 'required'
+    : REQUIRED
     | 'unique'
     ;
 
@@ -355,6 +365,9 @@ minMaxByteValidator
 //    | FIELD_TYPE_TIME
 //    | FIELD_TYPE_OTHER
 //    ;
+REQUIRED
+    : 'required'
+    ;
 
 FIELD_TYPE_OTHER
     : 'UUID'
@@ -368,7 +381,7 @@ FIELD_TYPE_STRING
 FIELD_TYPE_TIME
     : 'Instant'
     | 'LocalDate'
-    | 'ZoneDateTime'
+    | 'ZonedDateTime'
     | 'Duration'
     | 'Period'
     ;
@@ -387,7 +400,6 @@ FIELD_TYPE_NUMBER
     | 'Float'
     | 'Double'
     ;
-
 
 AUTHENTICATION_TYPE
     : 'jwt'
@@ -422,6 +434,31 @@ VARIABLE
 PROVIDER
    : 'provider'
    ;
+
+
+RELATION_SHIP_TYPE
+    : RELATION_SHIP_ONE_TO_MANY
+    | RELATION_SHIP_MANY_TO_ONE
+    | RELATION_SHIP_MANY_TO_MANY
+    | RELATION_SHIP_ONE_TO_ONE
+    ;
+
+RELATION_SHIP_MANY_TO_MANY
+    : 'ManyToMany'
+    ;
+
+RELATION_SHIP_ONE_TO_ONE
+    : 'OneToOne'
+    ;
+
+RELATION_SHIP_ONE_TO_MANY
+    : 'OneToMany'
+    ;
+
+RELATION_SHIP_MANY_TO_ONE
+    : 'ManyToOne'
+    ;
+
 
 IN
    : 'in'
@@ -522,7 +559,9 @@ IDENTIFIER_UPPER
     | [A-Z][A-Z_]*;
 
 fragment IDENTIFIER_NODE: [a-zA-Z]([a-zA-Z0-9_])* ;
-IDENTIFIER: IDENTIFIER_NODE ('.' IDENTIFIER_NODE)*;
+IDENTIFIER
+    : IDENTIFIER_NODE ('.' IDENTIFIER_NODE)*
+    | IDENTIFIER_UPPER;
 
 //STRING_LITERALS
 //    : STRING_LITERAL+
