@@ -186,14 +186,33 @@ identifierProperty
     ;
 
 entityField
-    : comment? IDENTIFIER FIELD_TYPE
-    | comment? IDENTIFIER FIELD_TYPE (minmax)*
-    | comment? IDENTIFIER FIELD_TYPE (validation)*
-    | comment? IDENTIFIER FIELD_TYPE (validation)* (minmax)*
-    | comment? IDENTIFIER IDENTIFIER (minmax)*
-    | comment? IDENTIFIER IDENTIFIER (minmax)*
-    | comment? IDENTIFIER IDENTIFIER (validation)*
-    | comment? IDENTIFIER IDENTIFIER (validation)* (minmax)*
+    : comment? IDENTIFIER FIELD_TYPE_NUMBER comment? COMMA?
+    | comment? IDENTIFIER FIELD_TYPE_NUMBER (minMaxNumberValidator)* comment? COMMA?
+    | comment? IDENTIFIER FIELD_TYPE_NUMBER (validation)* comment? COMMA?
+    | comment? IDENTIFIER FIELD_TYPE_NUMBER (validation)* (minMaxNumberValidator)* comment? COMMA?
+    | comment? IDENTIFIER FIELD_TYPE_NUMBER (minMaxNumberValidator)* (validation)* comment? COMMA?
+//    : comment? IDENTIFIER FIELD_TYPE_NUMBER (minMaxNumberValidator)*
+//    | comment? IDENTIFIER FIELD_TYPE_NUMBER (validation)*
+//    | comment? IDENTIFIER FIELD_TYPE_NUMBER (validation)* (minMaxNumberValidator)*
+//    | comment? IDENTIFIER FIELD_TYPE_NUMBER (minMaxNumberValidator)* (validation)*
+    | comment? IDENTIFIER FIELD_TYPE_BLOB comment? COMMA?
+    | comment? IDENTIFIER FIELD_TYPE_BLOB (minMaxByteValidator)* comment? COMMA?
+    | comment? IDENTIFIER FIELD_TYPE_BLOB (validation)* comment? COMMA?
+    | comment? IDENTIFIER FIELD_TYPE_BLOB (validation)* (minMaxByteValidator)* comment? COMMA?
+    | comment? IDENTIFIER FIELD_TYPE_BLOB (minMaxByteValidator)* (validation)* comment? COMMA?
+
+    | comment? IDENTIFIER FIELD_TYPE_STRING comment? COMMA?
+    | comment? IDENTIFIER FIELD_TYPE_STRING (minMaxStringValidator)* comment? COMMA?
+    | comment? IDENTIFIER FIELD_TYPE_STRING (validation | validatorPattern)* comment? COMMA?
+    | comment? IDENTIFIER FIELD_TYPE_STRING (validation | validatorPattern)* (minMaxStringValidator)* comment? COMMA?
+    | comment? IDENTIFIER FIELD_TYPE_STRING (minMaxStringValidator)* (validation | validatorPattern)* comment? COMMA?
+
+    | comment? IDENTIFIER FIELD_TYPE_TIME comment? COMMA?
+    | comment? IDENTIFIER FIELD_TYPE_TIME (validation)* comment? COMMA?
+    | comment? IDENTIFIER FIELD_TYPE_OTHER comment? COMMA?
+    | comment? IDENTIFIER FIELD_TYPE_OTHER (validation)* comment? COMMA?
+    | comment? IDENTIFIER IDENTIFIER comment? COMMA?
+    | comment? IDENTIFIER IDENTIFIER (validation)* comment? COMMA?
     ;
 
 testFrameworksBody
@@ -310,33 +329,65 @@ validatorPattern
 validation
     : 'required'
     | 'unique'
-    | validatorPattern
     ;
 
-minValidator
-    : 'minlength' LPAREN NATURAL_NUMBER RPAREN
-    | 'minbytes' LPAREN NATURAL_NUMBER RPAREN
-    | 'min' LPAREN NATURAL_NUMBER RPAREN
-    ;
-maxValidator
-    : 'maxlength' LPAREN NATURAL_NUMBER RPAREN
-    | 'maxbytes' LPAREN NATURAL_NUMBER RPAREN
+minMaxNumberValidator
+    : 'min' LPAREN NATURAL_NUMBER RPAREN
     | 'max' LPAREN NATURAL_NUMBER RPAREN
     ;
-minmax
-    : minValidator
-    | maxValidator
+
+minMaxStringValidator
+    : 'minlength' LPAREN NATURAL_NUMBER RPAREN
+    | 'maxlength' LPAREN NATURAL_NUMBER RPAREN
+
+    ;
+minMaxByteValidator
+    : 'minbytes' LPAREN NATURAL_NUMBER RPAREN
+    | 'maxbytes' LPAREN NATURAL_NUMBER RPAREN
     ;
 
-FIELD_TYPE
+
+//
+//FIELD_TYPE
+//    : FIELD_TYPE_STRING
+//    | FIELD_TYPE_NUMBER
+//    | FIELD_TYPE_BLOB
+//    | FIELD_TYPE_TIME
+//    | FIELD_TYPE_OTHER
+//    ;
+
+FIELD_TYPE_OTHER
+    : 'UUID'
+    | 'Enum'
+    ;
+
+FIELD_TYPE_STRING
     : 'String'
-    | 'Long'
-    | 'Instant'
-    | 'Integer'
-    | 'BigDecimal'
+    ;
+
+FIELD_TYPE_TIME
+    : 'Instant'
+    | 'LocalDate'
+    | 'ZoneDateTime'
     | 'Duration'
     | 'Period'
     ;
+
+FIELD_TYPE_BLOB
+    : 'Blob'
+    | 'AnyBlob'
+    | 'ImageBlob'
+    | 'TextBlob'
+    ;
+
+FIELD_TYPE_NUMBER
+    : 'Long'
+    | 'Integer'
+    | 'BigDecimal'
+    | 'Float'
+    | 'Double'
+    ;
+
 
 AUTHENTICATION_TYPE
     : 'jwt'

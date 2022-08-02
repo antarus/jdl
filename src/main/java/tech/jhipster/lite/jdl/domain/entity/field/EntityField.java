@@ -60,13 +60,16 @@ private boolean hasValidation;
 
     @Override
     public String toString() {
-        return "Field{" +
+        return "EntityField{" +
                 "name=" + name +
                 ", modifiers=" + modifiers +
                 ", comment=" + comment +
                 ", type=" + type +
                 ", validations=" + validations +
                 ", validators=" + validators +
+                ", isRequired=" + isRequired +
+                ", hasValidator=" + hasValidator +
+                ", hasValidation=" + hasValidation +
                 '}';
     }
 
@@ -117,7 +120,7 @@ private boolean hasValidation;
             entityField.validators = this.validators;
             entityField.hasValidator = !this.validators.isEmpty();
             entityField.hasValidation = !this.validations.isEmpty();
-            entityField.isRequired = this.validations.stream().filter(f-> f.equals(FieldValidation.REQUIRED)).findFirst().isPresent();
+            entityField.isRequired = this.validations.stream().anyMatch(f-> f.equals(FieldValidation.REQUIRED));
             entityField.comment = this.comment;
             entityField.type = this.type;
             if (this.modifiers.isEmpty()){

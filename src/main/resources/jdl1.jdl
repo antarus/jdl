@@ -34,9 +34,9 @@ entity bloodPressure(blood) {
 /*
 javadoc timestamp
 */
-  timestamp ZonedDateTime required
-  systolic Integer required
-  diastolic Integer required
+  timestamp ZonedDateTime required,
+  systolic Integer min(9) max(100) /* syslogic comment */,
+  /* diastolic comment */diastolic Integer required, /* name comment */
     name String required maxlength(150)
     handle String required minlength(2)
 }
@@ -52,7 +52,7 @@ test timestamp
 }
 entity Points {
   date LocalDate required
-  exercise Integer
+  exercise Integer 
   meals Integer
   alcohol Integer
   notes String maxlength(140)

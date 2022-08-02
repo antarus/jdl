@@ -64,6 +64,11 @@ public class GeneratorWithRoaster {
                     switch (fieldValidator.name()){
                         case "minlength" ->fieldAnnotation.setLiteralValue("min", String.valueOf(fieldValidator.value())).setName("Size");
                         case "maxlength" ->fieldAnnotation.setLiteralValue("max", String.valueOf(fieldValidator.value())).setName("Size");
+                        case "min" ->fieldAnnotation.setLiteralValue("min", String.valueOf(fieldValidator.value())).setName("Size");
+                        case "max" ->fieldAnnotation.setLiteralValue("max", String.valueOf(fieldValidator.value())).setName("Size");
+                        case "minbytes" ->fieldAnnotation.setLiteralValue("min", String.valueOf(fieldValidator.value())).setName("Size");
+                        case "maxbytes" ->fieldAnnotation.setLiteralValue("max", String.valueOf(fieldValidator.value())).setName("Size");
+
                         default -> throw new RuntimeException("Validator not mananged yet " + fieldValidator.name());
                     }
                 });

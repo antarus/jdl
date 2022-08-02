@@ -40,9 +40,10 @@ public class EntityVisitor {
             }
             entityBuilder.tableName(new EntityTableName(tableName));
             System.out.println("tableName : " + tableName);
-            ctx.entityBody().field().stream().forEach( fc -> {
-                EntityFieldVisitor.EntityFieldJdl fieldVisitor = new EntityFieldVisitor.EntityFieldJdl();
-                entityBuilder.addField(fieldVisitor.visitField(fc));
+            EntityFieldVisitor.EntityFieldJdl fieldVisitor = new EntityFieldVisitor.EntityFieldJdl();
+            ctx.entityBody().entityField().stream().forEach( fc -> {
+
+                entityBuilder.addField(fieldVisitor.visitEntityField(fc));
             });
 
             return entityBuilder.build();
