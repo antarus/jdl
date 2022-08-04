@@ -1,9 +1,11 @@
 package tech.jhipster.lite.jdl.domain.config;
 
 import tech.jhipster.lite.error.domain.Assert;
+import tech.jhipster.lite.module.domain.properties.JHipsterProjectFolder;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.UUID;
 
 public class ConfigApp {
 
@@ -11,6 +13,7 @@ public class ConfigApp {
         return new ConfigAppBuilder();
     }
 
+    private JHipsterProjectFolder projectFolder;
     private ConfigFluentMethod fluentMethod;
 
     private ConfigBaseName configBaseName;
@@ -46,10 +49,15 @@ public class ConfigApp {
         return fluentMethod;
     }
 
+    public JHipsterProjectFolder getProjectFolder() {
+        return projectFolder;
+    }
+
     @Override
     public String toString() {
         return "ConfigApp{" +
-                "fluentMethod=" + fluentMethod +
+                "projectFolder=" + projectFolder +
+                ", fluentMethod=" + fluentMethod +
                 ", configBaseName=" + configBaseName +
                 ", configBasePackage=" + configBasePackage +
                 ", configEntityPath=" + configEntityPath +
@@ -66,9 +74,14 @@ public class ConfigApp {
         private ConfigBuildTool configBuildTool;
         private final Collection<ConfigNotManaged> notManaged = new ArrayList<>();
 
+        private JHipsterProjectFolder projectFolder;
         private ConfigAppBuilder() {
         }
 
+        public ConfigAppBuilder projectFolder(JHipsterProjectFolder projectFolder) {
+            this.projectFolder = projectFolder;
+            return this;
+        }
         public ConfigAppBuilder fluentMethod(ConfigFluentMethod fluentMethod) {
             this.fluentMethod = fluentMethod;
             return this;
@@ -106,6 +119,10 @@ public class ConfigApp {
             if (this.configEntityPath == null) {
                 this.configEntityPath = new ConfigEntityPath("");
             }
+            if (this.projectFolder == null){
+                this.projectFolder = new JHipsterProjectFolder("/tmp/" + UUID.randomUUID().toString());
+            }
+            configApp.projectFolder=this.projectFolder;
             configApp.fluentMethod=this.fluentMethod;
             configApp.configBuildTool = this.configBuildTool;
             configApp.configBasePackage = this.configBasePackage;

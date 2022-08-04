@@ -15,6 +15,7 @@
         <version.roaster>2.26.0.Final</version.roaster>
         <guava.version>31.1-jre</guava.version>
         <compiler-plugin.version>3.10.1</compiler-plugin.version>
+        <jgit.version>6.2.0.202206071550-r</jgit.version>
     </properties>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -52,6 +53,16 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.12.0</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.11.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jgit</groupId>
+            <artifactId>org.eclipse.jgit</artifactId>
+            <version>${jgit.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jboss.forge.roaster</groupId>

@@ -90,8 +90,8 @@ enum Units {
 }
 
 relationship ManyToOne {
-  BloodPressure to Bb
-  Blog{user(login)} to User
+  /* before */BloodPressure to /*to*/ Bb
+   /* before */Blog{user(login)} to  /*to*/User
   Post{blog(name) required} to Blog
 
 }
